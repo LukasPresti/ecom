@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — CampusThrift</title>
+  <meta name="description" content="Sign in or create your free CampusThrift account with your campus email." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column;">
+
+<div id="main-nav"></div>
+
+<div class="auth-page page-top">
+  <div class="auth-container animate-fadeup">
+    
+    <a href="index.html" class="nav-logo" style="justify-content:center;margin-bottom:32px;font-size:1.6rem;">
+      <div class="logo-icon" style="width:44px;height:44px;font-size:0.85rem;">CT</div>
+      Campus<span>Thrift</span>
+    </a>
+
+    
+    <div class="tabs" style="margin-bottom:32px;" id="authTabs">
+      <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn" id="registerTab" onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    
+    <div id="loginForm" class="auth-form-panel">
+      <h1 class="display-md" style="font-size:1.5rem;margin-bottom:8px;">Welcome back</h1>
+      <p style="color:var(--color-muted);font-size:0.9rem;margin-bottom:28px;">Sign in to your CampusThrift account</p>
+
+      <form onsubmit="handleLogin(event)" novalidate>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Campus Email</label>
+            <input type="email" id="loginEmail" class="form-input" placeholder="you@university.edu" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Password</label>
+            <div style="position:relative;">
+              <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required />
+              <button type="button" onclick="togglePw('loginPassword',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--color-muted);cursor:pointer;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;">SHOW</button>
+            </div>
+          </div>
+          <div style="text-align:right;margin-top:-8px;">
+            <a href="#" style="font-size:0.8rem;color:var(--color-primary);">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;">Sign In →</button>
+        </div>
+      </form>
+
+      <div class="divider" style="margin:24px 0;"></div>
+      <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);">Don't have an account? <button onclick="switchTab('register')" style="background:none;border:none;color:var(--color-primary);font-weight:600;cursor:pointer;font-size:0.85rem;">Create one →</button></p>
+    </div>
+
+    
+    <div id="registerForm" class="auth-form-panel" style="display:none;">
+      <h1 class="display-md" style="font-size:1.5rem;margin-bottom:8px;">Join CampusThrift</h1>
+      <p style="color:var(--color-muted);font-size:0.9rem;margin-bottom:28px;">A valid campus email is required to register.</p>
+
+      <div class="callout callout-info" style="margin-bottom:20px;font-size:0.82rem;">
+         <strong>Campus Verification:</strong> You must use a <strong>.edu</strong> or recognized campus email. We'll send a verification link to confirm your enrollment.
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="grid-2" style="gap:12px;">
+          <div class="form-group">
+            <label class="form-label" for="regFirst">First Name</label>
+            <input type="text" id="regFirst" class="form-input" placeholder="Jane" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regLast">Last Name</label>
+            <input type="text" id="regLast" class="form-input" placeholder="Smith" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regEmail">Campus Email <span style="color:var(--color-accent);">*</span></label>
+          <input type="email" id="regEmail" class="form-input" placeholder="you@university.edu" />
+          <span style="font-size:0.75rem;color:var(--color-muted);margin-top:4px;">Must be a .edu or recognized campus email address</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regCampus">University / Campus</label>
+          <select id="regCampus" class="form-select">
+            <option value="">Select your campus…</option>
+            <option>NJIT</option>
+            <option>Rutgers University</option>
+            <option>Montclair State University</option>
+            <option>Seton Hall University</option>
+            <option>Rowan University</option>
+            <option>Other (recognized campus)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPw">Password</label>
+          <div style="position:relative;">
+            <input type="password" id="regPw" class="form-input" placeholder="Min. 8 characters" />
+            <button type="button" onclick="togglePw('regPw',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--color-muted);cursor:pointer;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;">SHOW</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPwConf">Confirm Password</label>
+          <input type="password" id="regPwConf" class="form-input" placeholder="Repeat password" />
+        </div>
+
+        
+        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:0.875rem;color:var(--color-muted);">
+            <input type="checkbox" id="ageCheck" style="margin-top:3px;accent-color:var(--color-primary);" />
+            I am at least 18 years of age <em>(or at least 13 with verified guardian consent)</em>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:0.875rem;color:var(--color-muted);">
+            <input type="checkbox" id="tosCheck" style="margin-top:3px;accent-color:var(--color-primary);" />
+            I agree to the <a href="legal.html" style="color:var(--color-primary);">Terms of Service</a>, <a href="legal.html#privacy" style="color:var(--color-primary);">Privacy Policy</a>, and <a href="legal.html#community" style="color:var(--color-primary);">Community Guidelines</a>
+          </label>
+        </div>
+
+        <button class="btn btn-primary" onclick="handleRegister()" style="width:100%;justify-content:center;padding:14px;">Create Account →</button>
+      </div>
+
+      <div class="divider" style="margin:24px 0;"></div>
+      <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);">Already have an account? <button onclick="switchTab('login')" style="background:none;border:none;color:var(--color-primary);font-weight:600;cursor:pointer;font-size:0.85rem;">Sign in →</button></p>
+    </div>
+  </div>
+</div>
+
+<div id="main-footer"></div>
+
+<style>
+.auth-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.auth-container {
+  width: 100%;
+  max-width: 480px;
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 48px;
+}
+
+@media (max-width: 480px) {
+  .auth-container { padding: 28px 20px; }
+}
+</style>
+
+<script src="js/main.js"></script>
+<script>
+function switchTab(tab) {
+  const loginBtn = document.getElementById('loginTab');
+  const regBtn = document.getElementById('registerTab');
+  const loginForm = document.getElementById('loginForm');
+  const regForm = document.getElementById('registerForm');
+  if (tab === 'login') {
+    loginBtn.classList.add('active'); regBtn.classList.remove('active');
+    loginForm.style.display = 'block'; regForm.style.display = 'none';
+  } else {
+    regBtn.classList.add('active'); loginBtn.classList.remove('active');
+    regForm.style.display = 'block'; loginForm.style.display = 'none';
+  }
+}
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = 'HIDE'; }
+  else { input.type = 'password'; btn.textContent = 'SHOW'; }
+}
+
+function handleLogin(evt) {
+  evt.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  var eml = email;
+  if (!eml.includes('@')) { showToast('Please enter a valid email', 'warn'); return; }
+  showToast('Signing in…', 'info');
+  setTimeout(() => { window.location.href = 'profile.html'; }, 1200);
+}
+
+function handleRegister() {
+  if (!document.getElementById('tosCheck').checked) {
+    showToast('You must agree to the Terms of Service to continue.', 'warn'); return;
+  }
+  if (!document.getElementById('ageCheck').checked) {
+    showToast('You must confirm your age eligibility.', 'warn'); return;
+  }
+  const emailVal = document.getElementById('regEmail').value;
+  if (!emailVal) { showToast('Please enter your campus email.', 'warn'); return; }
+  showToast('Account created! Check your email to verify your campus.', 'success');
+  setTimeout(() => { window.location.href = 'profile.html'; }, 1600);
+}
+</script>
+</body>
+</html>

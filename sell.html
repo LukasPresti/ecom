@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post an Item — CampusThrift</title>
+  <meta name="description" content="List your item for sale on CampusThrift in 3 easy steps." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-top">
+
+  <div id="main-nav"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <div class="section-label">Sell on CampusThrift</div>
+      <h1 class="display-lg" style="margin-top:8px;">Post an Item</h1>
+      <p class="text-muted" style="margin-top:8px;">Free to list. 5% fee only when it sells.</p>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:40px;padding-bottom:80px;">
+    <div class="sell-layout">
+
+
+      <div>
+
+        <div class="steps" id="stepsBar" style="margin-bottom:40px;">
+          <div class="step-item">
+            <div class="step-circle active" id="step-c1">1</div>
+            <div class="step-line" id="step-l1"></div>
+          </div>
+          <div class="step-item">
+            <div class="step-circle" id="step-c2">2</div>
+            <div class="step-line" id="step-l2"></div>
+          </div>
+          <div class="step-item">
+            <div class="step-circle" id="step-c3">3</div>
+            <div class="step-line" style="opacity:0;"></div>
+          </div>
+        </div>
+
+
+        <div class="card form-step animate-fadeup" id="step1">
+          <h2 class="display-md" style="font-size:1.25rem;margin-bottom:24px;">Step 1 — Item Details</h2>
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div class="form-group">
+              <label class="form-label" for="itemTitle">Item Title <span
+                  style="color:var(--color-accent);">*</span></label>
+              <input type="text" id="itemTitle" class="form-input"
+                placeholder="e.g. Introduction to Algorithms, 3rd Edition" maxlength="100" />
+              <span id="titleCount" style="font-size:0.75rem;color:var(--color-muted-2);">0/100</span>
+            </div>
+            <div class="grid-2" style="gap:16px;">
+              <div class="form-group">
+                <label class="form-label" for="itemCat">Category <span
+                    style="color:var(--color-accent);">*</span></label>
+                <select id="itemCat" class="form-select">
+                  <option value="">Select category…</option>
+                  <option value="textbooks">Textbooks</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="furniture">Furniture</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="sports">Sports &amp; Fitness</option>
+                  <option value="supplies">School Supplies</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="itemCondition">Condition <span
+                    style="color:var(--color-accent);">*</span></label>
+                <select id="itemCondition" class="form-select">
+                  <option value="">Select condition…</option>
+                  <option value="Like New">Like New — Barely used</option>
+                  <option value="Good">Good — Minor wear</option>
+                  <option value="Fair">Fair — Visible wear</option>
+                  <option value="Poor">For Parts — Heavy wear</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="itemDesc">Description <span
+                  style="color:var(--color-accent);">*</span></label>
+              <textarea id="itemDesc" class="form-textarea"
+                placeholder="Describe your item accurately. Include any known defects, missing parts, or important information a buyer would want to know."
+                style="min-height:140px;"></textarea>
+              <span style="font-size:0.75rem;color:var(--color-muted);">Be accurate and honest — misrepresentation
+                violates our <a href="legal.html" style="color:var(--color-primary);">Listing Policy</a>.</span>
+            </div>
+            <button class="btn btn-primary" onclick="goStep(2)" style="align-self:flex-start;padding:12px 32px;">Next:
+              Photos & Price →</button>
+          </div>
+        </div>
+
+
+        <div class="card form-step animate-fadeup" id="step2" style="display:none;">
+          <h2 class="display-md" style="font-size:1.25rem;margin-bottom:24px;">Step 2 — Photos & Price</h2>
+          <div style="display:flex;flex-direction:column;gap:20px;">
+
+            <div class="form-group">
+              <label class="form-label">Photos <span style="color:var(--color-accent);">*</span> <span
+                  style="font-weight:400;color:var(--color-muted);">(minimum 1 required)</span></label>
+              <div class="photo-upload-zone" id="photoZone" onclick="document.getElementById('photoInput').click()">
+                <div class="photo-upload-inner">
+                  <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;border:1px dashed var(--color-border);padding:8px 18px;display:inline-block;color:var(--color-muted);">[ UPLOAD ]</div>
+                  <div style="font-weight:600;margin:8px 0 4px;">Click to upload photos</div>
+                  <div style="font-size:0.8rem;color:var(--color-muted);">Must be actual photos of the item. No stock
+                    photos as primary listing image.</div>
+                  <div style="margin-top:12px;">
+                    <span class="badge badge-primary">1+ photo required</span>
+                  </div>
+                </div>
+                <input type="file" id="photoInput" multiple accept="image/*" style="display:none;"
+                  onchange="handlePhotos(this)" />
+              </div>
+              <div id="photoPreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;"></div>
+            </div>
+
+            <div class="grid-2" style="gap:16px;">
+              <div class="form-group">
+                <label class="form-label" for="itemPrice">Asking Price ($) <span
+                    style="color:var(--color-accent);">*</span></label>
+                <input type="number" id="itemPrice" class="form-input" placeholder="0.00" min="1" max="9999"
+                  step="0.01" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="itemCampus">Campus Location <span
+                    style="color:var(--color-accent);">*</span></label>
+                <select id="itemCampus" class="form-select">
+                  <option value="">Select campus…</option>
+                  <option>NJIT</option>
+                  <option>Rutgers University</option>
+                  <option>Montclair State University</option>
+                  <option>Seton Hall University</option>
+                  <option>Rowan University</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Tags <span
+                  style="font-weight:400;color:var(--color-muted);font-size:0.8rem;">(helps buyers find
+                  you)</span></label>
+              <input type="text" id="itemTags" class="form-input"
+                placeholder="e.g. calculus, math, 9th edition, MIT press" />
+            </div>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+              <button class="btn btn-primary" onclick="goStep(3)">Next: Review & Post →</button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="card form-step animate-fadeup" id="step3" style="display:none;">
+          <h2 class="display-md" style="font-size:1.25rem;margin-bottom:24px;">Step 3 — Review & Publish</h2>
+          <div id="reviewCard" class="card" style="margin-bottom:24px;"></div>
+
+          <div class="callout callout-warn" style="margin-bottom:20px;">
+             By posting, you confirm your listing complies with our <a href="legal.html"
+              style="color:var(--color-accent);">Usage and Listing Policy</a> and that the item is real, available, and
+            accurately described.
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+            <button class="btn btn-accent btn-lg" onclick="publishListing()">Publish Listing</button>
+          </div>
+        </div>
+      </div>
+
+
+      <aside>
+        <div class="card" style="position:sticky;top:calc(var(--nav-h) + 20px);">
+          <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:16px;">Listing Tips
+          </h3>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="tip-item">
+              <div class="tip-icon" style="font-size:0.7rem;font-weight:700;border:1px solid var(--color-border);padding:3px 7px;flex-shrink:0;">01</div>
+              <div>
+                <div style="font-weight:600;font-size:0.875rem;">Use real photos</div>
+                <div style="font-size:0.8rem;color:var(--color-muted);">At least 1 actual photo of the item. Good
+                  lighting = faster sales.</div>
+              </div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-icon" style="font-size:0.7rem;font-weight:700;border:1px solid var(--color-border);padding:3px 7px;flex-shrink:0;">02</div>
+              <div>
+                <div style="font-weight:600;font-size:0.875rem;">Price realistically</div>
+                <div style="font-size:0.8rem;color:var(--color-muted);">Check similar listings. Fair prices sell 3x
+                  faster.</div>
+              </div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-icon" style="font-size:0.7rem;font-weight:700;border:1px solid var(--color-border);padding:3px 7px;flex-shrink:0;">03</div>
+              <div>
+                <div style="font-weight:600;font-size:0.875rem;">Be specific</div>
+                <div style="font-size:0.8rem;color:var(--color-muted);">Include edition, brand, defects, and whether
+                  accessories are included.</div>
+              </div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-icon" style="font-size:0.7rem;font-weight:700;border:1px solid var(--color-border);padding:3px 7px;flex-shrink:0;">04</div>
+              <div>
+                <div style="font-weight:600;font-size:0.875rem;">Stay on platform</div>
+                <div style="font-size:0.8rem;color:var(--color-muted);">Never share personal contact info. All
+                  transactions must go through CampusThrift.</div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div style="font-size:0.8rem;color:var(--color-muted);line-height:1.6;">
+            <strong style="color:var(--color-text);">Fee structure:</strong><br>
+            Listing is always <strong style="color:var(--color-success);">free</strong>. A <strong
+              style="color:var(--color-text);">5% seller fee</strong> applies only when your item sells.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="main-footer"></div>
+
+  <style>
+    .sell-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .photo-upload-zone {
+      border: 1px dashed var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 40px 24px;
+      text-align: center;
+      background: var(--color-bg-2);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .photo-upload-zone:hover {
+      border-color: var(--color-white);
+      background: var(--color-bg);
+    }
+
+    .photo-preview-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+      border: 2px solid var(--color-primary);
+    }
+
+    .photo-placeholder-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-md);
+      background: rgba(20, 184, 166, 0.1);
+      border: 2px dashed var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--color-primary);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .tip-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .tip-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 900px) {
+      .sell-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script src="js/main.js"></script>
+  <script>
+    let step = 1;
+    let uploadedPhotos = 0;
+
+    function goStep(n) {
+      if (n > 1 && step === 1) {
+        if (!document.getElementById('itemTitle').value.trim()) { showToast('Please enter an item title.', 'warn'); return; }
+        if (!document.getElementById('itemCat').value) { showToast('Please select a category.', 'warn'); return; }
+        if (!document.getElementById('itemCondition').value) { showToast('Please select the item condition.', 'warn'); return; }
+        if (!document.getElementById('itemDesc').value.trim()) { showToast('Please provide a description.', 'warn'); return; }
+      }
+
+      if (n > 2 && step === 2) {
+        if (uploadedPhotos < 1) { showToast('Please upload at least 1 photo of your item.', 'warn'); return; }
+        if (!document.getElementById('itemPrice').value) { showToast('Please enter an asking price.', 'warn'); return; }
+        if (!document.getElementById('itemCampus').value) { showToast('Please select your campus location.', 'warn'); return; }
+      }
+
+      for (let i = 1; i <= 3; i++) {
+        const c = document.getElementById(`step-c${i}`);
+        if (i < n) { c.classList.remove('active'); c.classList.add('done'); c.textContent = ''; }
+        else if (i === n) { c.classList.remove('done'); c.classList.add('active'); c.textContent = i; }
+        else { c.classList.remove('active', 'done'); c.textContent = i; }
+      }
+      for (let i = 1; i <= 2; i++) {
+        const l = document.getElementById(`step-l${i}`);
+        l?.classList.toggle('done', i < n);
+      }
+
+      for (let i = 1; i <= 3; i++) {
+        const el = document.getElementById(`step${i}`);
+        if (el) el.style.display = i === n ? 'block' : 'none';
+      }
+      step = n;
+
+      if (n === 3) buildReview();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function buildReview() {
+      const title = document.getElementById('itemTitle').value;
+      const price = document.getElementById('itemPrice').value;
+      const cat = document.getElementById('itemCat').value;
+      const cond = document.getElementById('itemCondition').value;
+      const campus = document.getElementById('itemCampus').value;
+      const desc = document.getElementById('itemDesc').value;
+      const displayTitle = document.getElementById('itemTitle').value;
+
+      document.getElementById('reviewCard').innerHTML = `
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div class="photo-placeholder-thumb"> [ PHOTO ] </div>
+      <div style="flex:1;">
+        <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;margin-bottom:6px;">${title}</div>
+        <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:var(--color-primary);">$${price}</div>
+        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+          <span class="badge badge-primary">${cond}</span>
+          <span class="badge badge-accent">${cat}</span>
+        </div>
+        <div style="color:var(--color-muted);font-size:0.85rem;margin-top:10px;">${campus}</div>
+        <div style="color:var(--color-muted);font-size:0.875rem;margin-top:8px;line-height:1.6;">${desc.substring(0, 150)}${desc.length > 150 ? '…' : ''}</div>
+      </div>
+    </div>`;
+    }
+
+    function handlePhotos(input) {
+      const preview = document.getElementById('photoPreview');
+      preview.innerHTML = '';
+      uploadedPhotos = input.files.length;
+      Array.from(input.files).forEach(fObj => {
+        const url = URL.createObjectURL(fObj);
+        var srcUrl = url;
+        const img = document.createElement('img');
+        img.src = srcUrl; img.className = 'photo-preview-thumb';
+        preview.appendChild(img);
+      });
+      if (uploadedPhotos >= 1) showToast(`${uploadedPhotos} photo${uploadedPhotos > 1 ? 's' : ''} attached`, 'success');
+    }
+
+    function publishListing() {
+      showToast('Listing published! It\'s now live on CampusThrift.', 'success');
+      setTimeout(() => { window.location.href = 'profile.html'; }, 1800);
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const titleEl = document.getElementById('itemTitle');
+      const counter = document.getElementById('titleCount');
+      titleEl?.addEventListener('input', () => { counter.textContent = `${titleEl.value.length}/100`; });
+    });
+  </script>
+</body>
+
+</html>

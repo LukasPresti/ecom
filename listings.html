@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Browse Listings — CampusThrift</title>
+ <meta name="description"
+ content="Browse thousands of student listings for textbooks, electronics, furniture, clothing and more on CampusThrift." />
+ <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-top">
+
+ <div id="main-nav"></div>
+
+
+ <div class="page-header">
+ <div class="container">
+ <div class="section-label">Marketplace</div>
+ <h1 class="display-lg" style="margin-top:8px;">Browse Listings</h1>
+ <p class="text-muted" style="margin-top:8px;">12,400+ items from verified students near you</p>
+
+
+ <div class="search-bar" style="margin-top:24px;">
+ <div class="search-inner">
+ <span class="search-icon" style="font-size:0.75rem;font-weight:700;color:var(--color-muted);">[S]</span>
+ <input type="text" id="searchInput" class="search-input"
+ placeholder="Search for textbooks, laptops, furniture…" />
+ <button class="btn btn-primary" id="searchBtn" style="border-radius:0;">Search</button>
+ </div>
+ </div>
+ </div>
+ </div>
+
+
+ <div class="container section-sm">
+ <div class="sidebar-layout">
+
+
+ <aside class="sidebar" id="filterSidebar">
+ <div class="card" style="gap:0;padding:0;overflow:hidden;">
+
+ <div style="padding:20px 20px 16px;border-bottom:1px solid var(--color-border);">
+ <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;">Filters</h3>
+ </div>
+
+ <div style="padding:20px;display:flex;flex-direction:column;gap:24px;">
+
+
+ <div class="form-group">
+ <label class="form-label">Category</label>
+ <div class="filter-options" id="catFilter">
+ <button class="filter-pill active" data-cat="all">All</button>
+ <button class="filter-pill" data-cat="textbooks">Textbooks</button>
+ <button class="filter-pill" data-cat="electronics">Electronics</button>
+ <button class="filter-pill" data-cat="furniture">Furniture</button>
+ <button class="filter-pill" data-cat="clothing">Clothing</button>
+ <button class="filter-pill" data-cat="sports">Sports</button>
+ <button class="filter-pill" data-cat="supplies">Supplies</button>
+ </div>
+ </div>
+
+
+ <div class="form-group">
+ <label class="form-label">Condition</label>
+ <div class="filter-options" id="condFilter">
+ <button class="filter-pill active" data-cond="all">Any</button>
+ <button class="filter-pill" data-cond="Like New">Like New</button>
+ <button class="filter-pill" data-cond="Good">Good</button>
+ <button class="filter-pill" data-cond="Fair">Fair</button>
+ </div>
+ </div>
+
+
+ <div class="form-group">
+ <label class="form-label">Max Price: <span id="priceLabel">$200</span></label>
+ <input type="range" id="priceRange" min="1" max="500" value="200" />
+ </div>
+
+
+ <div class="form-group">
+ <label class="form-label">Campus</label>
+ <select class="form-select" id="campusFilter">
+ <option value="all">All Campuses</option>
+ <option value="NJIT">NJIT</option>
+ <option value="Rutgers">Rutgers</option>
+ <option value="Montclair">Montclair State</option>
+ </select>
+ </div>
+
+ <button class="btn btn-ghost" id="clearFilters" style="width:100%;">Clear Filters</button>
+ </div>
+ </div>
+ </aside>
+
+
+ <main>
+
+ <div class="flex items-center justify-between" style="margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+ <span id="resultsCount" style="font-size:0.9rem;color:var(--color-muted);">Showing 8 listings</span>
+ <div class="flex items-center gap-12">
+ <button class="btn btn-ghost btn-sm" id="toggleFilters" style="display:none;"> Filters</button>
+ <select class="form-select" id="sortSelect" style="width:auto;padding:8px 14px;font-size:0.85rem;">
+ <option value="default">Sort: Newest</option>
+ <option value="price-asc">Price: Low to High</option>
+ <option value="price-desc">Price: High to Low</option>
+ <option value="rating">Highest Rated</option>
+ </select>
+ </div>
+ </div>
+
+ <div class="grid-3 animate-stagger" id="listingsGrid"></div>
+
+ <div id="emptyState" style="display:none;text-align:center;padding:60px 20px;">
+ <div style="font-size:0.8rem;font-weight:700;letter-spacing:0.15em;border:1px solid var(--color-border);padding:6px 14px;display:inline-block;margin-bottom:16px;color:var(--color-muted);">[ ! ]</div>
+ <h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:8px;">No listings found</h3>
+ <p style="color:var(--color-muted);font-size:0.9rem;">Try adjusting your filters or search term.</p>
+ </div>
+ </main>
+ </div>
+ </div>
+
+ <div id="main-footer"></div>
+
+ <style>
+ .search-bar {
+ max-width: 700px;
+ }
+
+ .search-inner {
+ display: flex;
+ align-items: center;
+ background: rgba(255, 255, 255, 0.05);
+ border: 1.5px solid var(--color-border);
+ border-radius: var(--radius-sm);
+ padding: 6px 6px 6px 16px;
+ gap: 12px;
+ transition: var(--transition);
+ }
+
+ .search-inner:focus-within {
+ border-color: var(--color-primary);
+ background: rgba(20, 184, 166, 0.04);
+ box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+ }
+
+ .search-icon {
+ font-size: 1.1rem;
+ }
+
+ .search-input {
+ flex: 1;
+ background: transparent;
+ border: none;
+ outline: none;
+ color: var(--color-text);
+ font-size: 0.95rem;
+ font-family: var(--font-body);
+ }
+
+ .search-input::placeholder {
+ color: var(--color-muted-2);
+ }
+
+ .filter-options {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 6px;
+ margin-top: 4px;
+ }
+
+ .filter-pill {
+ padding: 8px 16px;
+ border-radius: var(--radius-sm);
+ font-size: 0.8rem;
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ border: 1px solid var(--color-border);
+ background: transparent;
+ color: var(--color-muted);
+ transition: var(--transition);
+ cursor: pointer;
+ }
+
+ .filter-pill.active,
+ .filter-pill:hover {
+ border-color: var(--color-primary);
+ color: var(--color-primary-inv);
+ background: var(--color-primary);
+ }
+
+  @media (max-width: 900px) {
+  #toggleFilters {
+  display: flex !important;
+  }
+  }
+ </style>
+ <script src="js/main.js"></script>
+ <script>
+ let activeFilters = { cat: 'all', cond: 'all', maxPrice: 200, campus: 'all', search: '' };
+ function renderListings() {
+  const grid = document.getElementById('listingsGrid');
+  const empty = document.getElementById('emptyState');
+  const count = document.getElementById('resultsCount');
+  const sort = document.getElementById('sortSelect').value;
+  let items = [...sampleListings];
+  items = items.filter(item => {
+  if (activeFilters.cat !== 'all' && item.category !== activeFilters.cat) return false;
+  if (activeFilters.cond !== 'all' && item.condition !== activeFilters.cond) return false;
+  if (item.price > activeFilters.maxPrice) return false;
+  if (activeFilters.campus !== 'all' && item.campus !== activeFilters.campus) return false;
+  if (activeFilters.search && !item.title.toLowerCase().includes(activeFilters.search)) return false;
+  return true;
+  });
+  if (sort === 'price-asc') items.sort((a, b) => a.price - b.price);
+  if (sort === 'price-desc') items.sort((a, b) => b.price - a.price);
+  if (sort === 'rating') items.sort((a, b) => b.rating - a.rating);
+  var fItems = items;
+  grid.innerHTML = '';
+  if (!fItems.length) { empty.style.display = 'block'; count.textContent = 'No listings found'; return; }
+  empty.style.display = 'none';
+  if (fItems) {
+  count.textContent = `Showing ${fItems.length} listing${fItems.length !== 1 ? 's' : ''}`;
+  }
+  fItems.forEach(item => {
+  grid.innerHTML += `
+  <div class="listing-card" onclick="location.href='listing-detail.html?id=${item.id}'">
+  <div class="listing-card-img-placeholder">${item.emoji}</div>
+  <div class="listing-card-body">
+  <div class="listing-card-title">${item.title}</div>
+  <div class="listing-card-meta">
+  <span class="listing-card-price">$${item.price}</span>
+  <span class="badge badge-primary" style="font-size:0.7rem;">${item.condition}</span>
+  </div>
+  <div class="listing-card-campus"> ${item.campus}</div>
+  </div>
+  <div class="listing-card-footer">
+  <div style="font-size:0.8rem;color:var(--color-muted);"> ${item.seller}</div>
+  <div><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span style="font-size:0.8rem;color:var(--color-muted);margin-left:2px;">${item.rating}</span></div>
+  </div>
+  </div>`;
+  });
+ }
+ document.addEventListener('DOMContentLoaded', () => {
+  renderListings();
+  document.querySelectorAll('#catFilter .filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+  document.querySelectorAll('#catFilter .filter-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  activeFilters.cat = pill.dataset.cat;
+  renderListings();
+  });
+  });
+  document.querySelectorAll('#condFilter .filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+  document.querySelectorAll('#condFilter .filter-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  activeFilters.cond = pill.dataset.cond;
+  renderListings();
+  });
+  });
+  const priceRange = document.getElementById('priceRange');
+  const priceLbl = document.getElementById('priceLabel');
+  priceRange.addEventListener('input', () => {
+  activeFilters.maxPrice = +priceRange.value;
+  priceLbl.textContent = `$${priceRange.value}`;
+  renderListings();
+  });
+  document.getElementById('campusFilter').addEventListener('change', (e) => {
+  activeFilters.campus = e.target.value;
+  renderListings();
+  });
+  document.getElementById('sortSelect').addEventListener('change', renderListings);
+  document.getElementById('searchBtn').addEventListener('click', () => {
+  activeFilters.search = document.getElementById('searchInput').value.toLowerCase().trim();
+  renderListings();
+  });
+  document.getElementById('searchInput').addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') {
+  activeFilters.search = e.target.value.toLowerCase().trim();
+  renderListings();
+  }
+  });
+  document.getElementById('clearFilters').addEventListener('click', () => {
+  activeFilters = { cat: 'all', cond: 'all', maxPrice: 200, campus: 'all', search: '' };
+  document.getElementById('searchInput').value = '';
+  priceRange.value = 200; priceLbl.textContent = '$200';
+  document.getElementById('campusFilter').value = 'all';
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  document.querySelector('#catFilter .filter-pill').classList.add('active');
+  document.querySelector('#condFilter .filter-pill').classList.add('active');
+  renderListings();
+  });
+  document.getElementById('toggleFilters').addEventListener('click', () => {
+  document.getElementById('filterSidebar').classList.toggle('show');
+  });
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('cat');
+  if (cat) {
+  const pill = document.querySelector(`[data-cat="${cat}"]`);
+  if (pill) {
+  pill.click();
+  pill.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  }
+ });
+ </script>
+</body>
+</html>

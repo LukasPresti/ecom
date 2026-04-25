@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Item Detail — CampusThrift</title>
+ <meta name="description" content="View full details of this campus listing on CampusThrift." />
+ <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-top">
+
+ <div id="main-nav"></div>
+
+ <div class="container section-sm" id="detailContainer">
+
+ </div>
+
+ <div id="main-footer"></div>
+
+ <style>
+ .detail-grid {
+ display: grid;
+ grid-template-columns: 1fr 380px;
+ gap: 40px;
+ align-items: start;
+ }
+
+ .photo-gallery {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ }
+
+ .main-photo {
+   width: 100%;
+   aspect-ratio: 4/3;
+   background: var(--color-bg-2);
+   border-radius: var(--radius-sm);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 2rem;
+   color: var(--color-muted);
+   font-weight: 600;
+   letter-spacing: 0.1em;
+   border: 1px solid var(--color-border);
+ }
+
+ .thumb-row {
+ display: flex;
+ gap: 10px;
+ }
+
+ .thumb {
+ width: 80px;
+ height: 80px;
+ border-radius: var(--radius-sm);
+ background: var(--color-bg-2);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 2rem;
+ border: 2px solid transparent;
+ cursor: pointer;
+ transition: var(--transition);
+ }
+
+ .thumb.active,
+ .thumb:hover {
+ border-color: var(--color-primary);
+ }
+
+ .detail-sidebar {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ }
+
+ .seller-card {
+ background: var(--color-bg-card);
+ border: 1px solid var(--color-border);
+ border-radius: var(--radius-lg);
+ padding: 24px;
+ }
+
+ .msg-form {
+ display: none;
+ flex-direction: column;
+ gap: 12px;
+ margin-top: 16px;
+ }
+
+ .msg-form.open {
+ display: flex;
+ }
+
+ .detail-specs {
+ background: var(--color-bg-card);
+ border: 1px solid var(--color-border);
+ border-radius: var(--radius-lg);
+ overflow: hidden;
+ }
+
+ .spec-row {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 12px 20px;
+ border-bottom: 1px solid var(--color-border);
+ font-size: 0.875rem;
+ }
+
+ .spec-row:last-child {
+ border-bottom: none;
+ }
+
+ .spec-key {
+ color: var(--color-muted);
+ }
+
+ .spec-val {
+ font-weight: 600;
+ }
+
+ @media (max-width: 900px) {
+ .detail-grid {
+ grid-template-columns: 1fr;
+ }
+ }
+ </style>
+
+ <script src="js/main.js"></script>
+ <script>
+ document.addEventListener('DOMContentLoaded', () => {
+  var uParams = new URLSearchParams(window.location.search);
+  const id = uParams.get('id') || 1;
+  const item = getListingById(id.toString() + '') || sampleListings[0];
+
+ document.title = `${item.title} — CampusThrift`;
+
+ const container = document.getElementById('detailContainer');
+ container.innerHTML = `
+ 
+ <div style="margin-bottom:24px;font-size:0.85rem;color:var(--color-muted);display:flex;gap:8px;align-items:center;">
+ <a href="index.html" style="color:var(--color-muted);transition:var(--transition);" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--color-muted)'">Home</a>
+ <span>›</span>
+ <a href="listings.html" style="color:var(--color-muted);transition:var(--transition);" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--color-muted)'">Browse</a>
+ <span>›</span>
+ <span style="color:var(--color-text);">${item.title}</span>
+ </div>
+
+ <div class="detail-grid animate-stagger">
+ 
+ <div>
+ <div class="photo-gallery">
+ <div class="main-photo" id="mainPhoto">${item.emoji}</div>
+ <div class="thumb-row">
+ <div class="thumb active" style="font-size:0.85rem;font-weight:600;">${item.emoji}</div>
+ <div class="thumb" style="font-size:0.85rem;opacity:0.5;color:var(--color-muted);font-weight:600;"> [ PHOTO ] </div>
+ <div class="thumb" style="font-size:0.85rem;opacity:0.5;color:var(--color-muted);font-weight:600;"> [ PHOTO ] </div>
+ </div>
+ </div>
+
+ <div style="margin-top:32px;">
+ <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:12px;">Description</h2>
+ <p style="color:var(--color-muted);font-size:0.9rem;line-height:1.8;">
+ This is a well-maintained <strong style="color:var(--color-text);">${item.title}</strong> in <strong style="color:var(--color-text);">${item.condition}</strong> condition. The item has been used but carefully maintained. All features work as expected. Minor cosmetic wear may be present but does not affect functionality. Photos are of the actual item. No missing parts or accessories.
+ </p>
+ <p style="color:var(--color-muted);font-size:0.9rem;line-height:1.8;margin-top:10px;">
+ Prefer local pickup on campus. Can meet at Student Center or any mutually agreed public location. Cash preferred, but platform payment accepted.
+ </p>
+ </div>
+
+ <div style="margin-top:32px;">
+ <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:12px;">Item Details</h2>
+ <div class="detail-specs">
+ <div class="spec-row"><span class="spec-key">Category</span><span class="spec-val">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span></div>
+ <div class="spec-row"><span class="spec-key">Condition</span><span class="spec-val">${item.condition}</span></div>
+ <div class="spec-row"><span class="spec-key">Campus</span><span class="spec-val"> ${item.campus}</span></div>
+ <div class="spec-row"><span class="spec-key">Pickup Method</span><span class="spec-val">In-Person / Campus</span></div>
+ <div class="spec-row"><span class="spec-key">Listed</span><span class="spec-val">2 hours ago</span></div>
+ <div class="spec-row"><span class="spec-key">Item ID</span><span class="spec-val" style="color:var(--color-muted-2);font-family:monospace;">#CT-000${item.id}</span></div>
+ </div>
+ </div>
+ </div>
+
+ 
+ <div class="detail-sidebar">
+ 
+ <div class="card">
+ <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:900;color:var(--color-primary);">$${item.price}</div>
+ <div style="display:flex;gap:8px;margin:4px 0 16px;flex-wrap:wrap;">
+ <span class="badge badge-success"> Verified Listing</span>
+ <span class="badge badge-primary">${item.condition}</span>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:10px;">
+ <button class="btn btn-primary" onclick="Cart.add({id:${item.id},title:'${item.title}',price:${item.price},emoji:'${item.emoji}'});this.textContent='Added to Cart';this.disabled=true;setTimeout(()=>{this.textContent='Add to Cart';this.disabled=false;},2000)"> Add to Cart</button>
+ <a href="cart.html" class="btn btn-accent"> Buy Now</a>
+ </div>
+ <div class="callout callout-info" style="margin-top:16px;font-size:0.8rem;">
+ <strong>Buyer Protected</strong> — You won't be charged until you confirm receipt.
+ </div>
+ </div>
+
+ 
+ <div class="seller-card">
+ <h3 style="font-family:var(--font-display);font-size:0.95rem;font-weight:700;margin-bottom:16px;color:var(--color-muted);">SELLER</h3>
+ <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+ <div class="avatar avatar-lg" style="background:var(--grad-primary);">${item.seller.charAt(0)}</div>
+ <div>
+ <div style="font-weight:700;font-size:1rem;">${item.seller}</div>
+ <div style="font-size:0.8rem;color:var(--color-muted);">${item.campus}</div>
+ <div style="font-size:0.8rem;margin-top:4px;"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <span style="color:var(--color-muted);">${item.rating} (24 ratings)</span></div>
+ </div>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:4px;font-size:0.8rem;color:var(--color-muted);margin-bottom:16px;">
+ <div>Campus Verified</div>
+ <div>14 items sold</div>
+ <div>Usually replies in under 1 hr</div>
+ </div>
+ <button class="btn btn-ghost" style="width:100%;" onclick="document.getElementById('msgForm').classList.toggle('open')"> Message Seller</button>
+ <div class="msg-form" id="msgForm">
+ <textarea class="form-textarea" placeholder="Hi, I'm interested in this item. Is it still available?" style="min-height:90px;"></textarea>
+ <button class="btn btn-primary" onclick="showToast('Message sent to ${item.seller}!','success');document.getElementById('msgForm').classList.remove('open')">Send Message</button>
+ </div>
+ </div>
+
+ 
+ <div class="callout callout-warn">
+ <span></span>
+ <div>
+ <strong>Safety Tip:</strong> Always meet in a public, campus location. Never share financial information through messages.
+ <a href="legal.html" style="color:var(--color-accent);margin-left:4px;">See Community Guidelines →</a>
+ </div>
+ </div>
+
+ 
+ <button class="btn btn-ghost btn-sm" style="width:100%;color:var(--color-muted);" onclick="showToast('Report submitted. Thank you.','info')"> Report This Listing</button>
+ </div>
+ </div>
+
+ 
+ <div style="margin-top:64px;" class="animate-stagger delay-3">
+ <h2 class="display-md" style="font-size:1.3rem;margin-bottom:24px;">More Like This</h2>
+ <div class="grid-4" id="similarGrid"></div>
+ </div>
+ `;
+
+  const similar = sampleListings.filter(l => l.id !== item.id).slice(0, 4);
+  const grid = document.getElementById('similarGrid');
+  similar.forEach(l => {
+  grid.innerHTML += `
+ <div class="listing-card" onclick="location.href='listing-detail.html?id=${l.id}'">
+ <div class="listing-card-img-placeholder">${l.emoji}</div>
+ <div class="listing-card-body">
+ <div class="listing-card-title">${l.title}</div>
+ <div class="listing-card-meta">
+ <span class="listing-card-price">$${l.price}</span>
+ <span class="badge badge-primary" style="font-size:0.7rem;">${l.condition}</span>
+ </div>
+ <div class="listing-card-campus"> ${l.campus}</div>
+ </div>
+ </div>`;
+ });
+ });
+ </script>
+</body>
+
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart & Checkout — CampusThrift</title>
+  <meta name="description" content="Review your cart and complete your purchase on CampusThrift." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-top">
+
+  <div id="main-nav"></div>
+
+  <div class="page-header">
+    <div class="container">
+      <div class="section-label">Checkout</div>
+      <h1 class="display-lg" style="margin-top:8px;">My Cart</h1>
+    </div>
+  </div>
+
+  <div class="container section-sm">
+    <div class="checkout-layout animate-stagger">
+
+
+      <div>
+        <div id="cartEmpty" style="display:none;text-align:center;padding:60px 20px;">
+          <div style="font-size:0.8rem;font-weight:700;letter-spacing:0.15em;border:1px solid var(--color-border);padding:8px 20px;display:inline-block;color:var(--color-muted);margin-bottom:16px;">[ CART ]</div>
+          <h2 style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:8px;">Your cart is empty</h2>
+          <p style="color:var(--color-muted);margin-bottom:24px;">Find something great on the marketplace.</p>
+          <a href="listings.html" class="btn btn-primary btn-lg">Browse Listings →</a>
+        </div>
+
+        <div id="cartItems" style="display:flex;flex-direction:column;gap:16px;"></div>
+
+
+        <div id="checkoutForm" style="display:none;margin-top:40px;">
+          <h2 style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:24px;">Delivery &
+            Contact</h2>
+
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="grid-2" style="gap:16px;">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-input" placeholder="Jane" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-input" placeholder="Smith" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Campus Email</label>
+              <input type="email" class="form-input" placeholder="you@university.edu" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Preferred Pickup Campus</label>
+              <select class="form-select">
+                <option>NJIT</option>
+                <option>Rutgers University</option>
+                <option>Montclair State</option>
+                <option>Seton Hall</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Preferred Pickup Time</label>
+              <input type="text" class="form-input" placeholder="e.g. Weekdays after 2pm, Sat morning" />
+            </div>
+
+            <div class="divider"></div>
+
+            <h2 style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:4px;">Payment</h2>
+            <div class="callout callout-info" style="font-size:0.82rem;">
+               Payments are processed securely. You will not be charged until the seller confirms the handoff.
+            </div>
+
+            <div class="form-group" style="margin-top:8px;">
+              <label class="form-label">Card Number</label>
+              <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" id="cardNum"
+                oninput="formatCard(this)" />
+            </div>
+            <div class="grid-2" style="gap:12px;">
+              <div class="form-group">
+                <label class="form-label">Expiry</label>
+                <input type="text" class="form-input" placeholder="MM / YY" maxlength="7" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">CVC</label>
+                <input type="text" class="form-input" placeholder="123" maxlength="4" />
+              </div>
+            </div>
+
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+              <div class="pay-method active" id="pm-card" onclick="selectPayMethod('card')">
+                Card
+              </div>
+              <div class="pay-method" id="pm-wallet" onclick="selectPayMethod('wallet')">
+                CampusThrift Wallet ($0.00)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <aside id="orderSummary" style="display:none;">
+        <div class="card"
+          style="position:sticky;top:calc(var(--nav-h) + 20px);display:flex;flex-direction:column;gap:16px;">
+          <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;">Order Summary</h2>
+
+          <div id="summaryLines" style="display:flex;flex-direction:column;gap:8px;"></div>
+
+          <div class="divider" style="margin:4px 0;"></div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;">
+            <div style="display:flex;justify-content:space-between;color:var(--color-muted);">
+              <span>Subtotal</span><span id="subtotalVal">$0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;color:var(--color-muted);">
+              <span>Buyer Fee</span><span style="color:var(--color-success);">Free</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;color:var(--color-muted);">
+              <span>Estimated Tax</span><span>$0.00</span>
+            </div>
+          </div>
+
+          <div class="divider" style="margin:0;"></div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--font-display);font-weight:700;font-size:0.95rem;">Total</span>
+            <span id="totalVal"
+              style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:var(--color-primary);">$0.00</span>
+          </div>
+
+          <button class="btn btn-accent btn-lg" style="width:100%;justify-content:center;" onclick="placeOrder()">
+             Place Order
+          </button>
+
+          <div class="callout callout-info" style="font-size:0.78rem;">
+             <strong>Buyer Protected</strong> — Payment is held until you confirm receipt.
+            <a href="legal.html#payment" style="color:var(--color-primary);margin-left:4px;">Learn more →</a>
+          </div>
+
+          <div style="text-align:center;font-size:0.75rem;color:var(--color-muted-2);">
+            By placing your order, you agree to our <a href="legal.html" style="color:var(--color-primary);">Terms of
+              Service</a> and <a href="legal.html#payment" style="color:var(--color-primary);">Payment Policy</a>.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+
+  <div id="successModal"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);z-index:9999;align-items:center;justify-content:center;padding:24px;">
+    <div
+      style="background:var(--color-bg-2);border:1px solid rgba(34,197,94,0.3);border-radius:var(--radius-xl);padding:48px;max-width:480px;width:100%;text-align:center;box-shadow:0 0 60px rgba(34,197,94,0.15);">
+      <div style="font-size:0.8rem;font-weight:700;letter-spacing:0.2em;border:2px solid var(--color-success);color:var(--color-success);padding:8px 20px;display:inline-block;margin-bottom:16px;">[ ORDER CONFIRMED ]</div>
+      <h2
+        style="font-family:var(--font-display);font-size:2rem;font-weight:900;margin-bottom:8px;color:var(--color-success);">
+        Order Placed!</h2>
+      <p style="color:var(--color-muted);margin-bottom:24px;line-height:1.7;">Your payment is secured and the seller has
+        been notified. They'll reach out to coordinate pickup within 24 hours.</p>
+      <div class="callout callout-success" style="text-align:left;margin-bottom:24px;font-size:0.85rem;">
+         <strong>Order #CT-0042 confirmed.</strong> A confirmation has been sent to your campus email.
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="profile.html" class="btn btn-primary">View My Orders</a>
+        <a href="listings.html" class="btn btn-ghost">Keep Browsing</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="main-footer"></div>
+
+  <style>
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .cart-item {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .cart-item:hover {
+      border-color: rgba(20, 184, 166, 0.2);
+    }
+
+    .cart-item-emoji {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-sm);
+      background: var(--color-bg-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      flex-shrink: 0;
+      border: 1px solid var(--color-border);
+    }
+
+    .pay-method {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--color-border);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .pay-method.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary);
+      color: var(--color-primary-inv);
+    }
+
+    @media (max-width: 900px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script src="js/main.js"></script>
+  <script>
+    function formatCard(input) {
+      let val = input.value.replace(/\D/g, '').substring(0, 16);
+      input.value = val.replace(/(.{4})/g, '$1 ').trim();
+    }
+    function selectPayMethod(method) {
+      document.querySelectorAll('.pay-method').forEach(el => el.classList.remove('active'));
+      document.getElementById(`pm-${method}`).classList.add('active');
+    }
+
+    function renderCart() {
+      const cartList = Cart.items;
+      let totalItems = cartList.length;
+      const cartItemsEl = document.getElementById('cartItems');
+      const emptyEl = document.getElementById('cartEmpty');
+      const formEl = document.getElementById('checkoutForm');
+      const orderSummaryEl = document.getElementById('orderSummary');
+      const summaryLines = document.getElementById('summaryLines');
+
+      if (!cartList.length) {
+        emptyEl.style.display = 'block';
+        cartItemsEl.style.display = 'none';
+        formEl.style.display = 'none';
+        orderSummaryEl.style.display = 'none';
+        return;
+      }
+
+      emptyEl.style.display = 'none';
+      cartItemsEl.style.display = 'flex';
+      formEl.style.display = 'block';
+      orderSummaryEl.style.display = 'block';
+
+      cartItemsEl.innerHTML = '';
+      summaryLines.innerHTML = '';
+
+      cartList.forEach(item => {
+        cartItemsEl.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-item-emoji" style="font-size:0.85rem;font-weight:600;">${item.emoji || ''}</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.95rem;margin-bottom:4px;">${item.title}</div>
+          <div style="font-size:0.8rem;color:var(--color-muted);">Qty: ${item.qty || 1}</div>
+        </div>
+        <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:800;color:var(--color-primary);margin-right:16px;">$${(item.price * (item.qty || 1)).toFixed(2)}</div>
+        <button onclick="Cart.remove(${item.id});renderCart();" style="background:none;border:1px solid var(--color-border);color:var(--color-muted);cursor:pointer;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:4px 8px;transition:var(--transition);text-transform:uppercase;" onmouseover="this.style.color='var(--color-danger)';this.style.borderColor='var(--color-danger)'" onmouseout="this.style.color='var(--color-muted)';this.style.borderColor='var(--color-border)'">Remove</button>
+      </div>`;
+
+        summaryLines.innerHTML += `
+      <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
+        <span style="color:var(--color-muted);flex:1;padding-right:12px;">${item.title.substring(0, 35)}${item.title.length > 35 ? '…' : ''}</span>
+        <span>$${(item.price * (item.qty || 1)).toFixed(2)}</span>
+      </div>`;
+      });
+
+      const total = Cart.total();
+      document.getElementById('subtotalVal').textContent = `$${total.toFixed(2)}`;
+      document.getElementById('totalVal').textContent = `$${total.toFixed(2)}`;
+    }
+
+    function placeOrder() {
+      if (!Cart.items.length) { showToast('Your cart is empty.', 'warn'); return; }
+      Cart.clear();
+      document.getElementById('successModal').style.display = 'flex';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (Cart.items.length > 0) renderCart();
+      else renderCart();
+    });
+  </script>
+</body>
+
+</html>

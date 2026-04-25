@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — CampusThrift</title>
+  <meta name="description" content="View and manage your CampusThrift profile, listings, and account settings." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-top">
+
+  <div id="main-nav"></div>
+
+
+  <div style="background:var(--color-bg);border-bottom:1px solid var(--color-border);padding:48px 0 32px;">
+    <div class="container animate-fadeup">
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+        <div class="avatar avatar-xl"
+          style="background:var(--color-bg-2);border:1px solid var(--color-border);font-size:2.2rem;display:flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:var(--radius-sm);">
+          LP</div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px;">
+            <h1 class="display-md" style="font-size:1.7rem;">Lukas Presti</h1>
+            <span class="badge badge-success">Campus Verified</span>
+          </div>
+          <div
+            style="display:flex;gap:16px;color:var(--color-muted);font-size:0.875rem;flex-wrap:wrap;margin-bottom:10px;">
+            <span>NJIT</span>
+            <span>lap5@njit.edu</span>
+            <span>Member since March 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <span
+                style="font-size:0.875rem;color:var(--color-muted);">4.9 average
+                (18 ratings)</span></div>
+            <span class="badge badge-accent"> Top Seller</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="document.getElementById('editModal').style.display='flex'"> Edit
+            Profile</button>
+          <a href="login.html" class="btn btn-ghost btn-sm"
+            style="color:var(--color-danger);border-color:rgba(244,63,94,0.3);">Sign Out</a>
+        </div>
+      </div>
+
+
+      <div class="profile-stats" style="margin-top:28px;">
+        <div class="profile-stat">
+          <div class="profile-stat-num">14</div>
+          <div class="profile-stat-label">Items Sold</div>
+        </div>
+        <div class="profile-stat-divider"></div>
+        <div class="profile-stat">
+          <div class="profile-stat-num">5</div>
+          <div class="profile-stat-label">Active Listings</div>
+        </div>
+        <div class="profile-stat-divider"></div>
+        <div class="profile-stat">
+          <div class="profile-stat-num">$842</div>
+          <div class="profile-stat-label">Total Earned</div>
+        </div>
+        <div class="profile-stat-divider"></div>
+        <div class="profile-stat">
+          <div class="profile-stat-num">$0.00</div>
+          <div class="profile-stat-label">Wallet Balance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container" style="padding-top:32px;padding-bottom:80px;">
+    <div class="tabs" style="margin-bottom:32px;max-width:600px;" id="profileTabs">
+      <button class="tab-btn active" onclick="switchProfileTab(0,this)">My Listings</button>
+      <button class="tab-btn" onclick="switchProfileTab(1,this)">Purchases</button>
+      <button class="tab-btn" onclick="switchProfileTab(2,this)">Reviews</button>
+      <button class="tab-btn" onclick="switchProfileTab(3,this)">Settings</button>
+    </div>
+
+
+    <div id="ptab0">
+      <div class="flex items-center justify-between" style="margin-bottom:20px;">
+        <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;">Active Listings</h2>
+        <a href="sell.html" class="btn btn-primary btn-sm">+ Post Item</a>
+      </div>
+      <div class="grid-4 animate-stagger" id="myListingsGrid"></div>
+    </div>
+
+
+    <div id="ptab1" style="display:none;">
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:20px;">Purchase History
+      </h2>
+      <div style="display:flex;flex-direction:column;gap:12px;" class="animate-stagger" id="purchaseList"></div>
+    </div>
+
+
+    <div id="ptab2" style="display:none;">
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:20px;">Seller Reviews
+      </h2>
+      <div style="display:flex;flex-direction:column;gap:16px;" class="animate-stagger" id="reviewsList"></div>
+    </div>
+
+
+    <div id="ptab3" style="display:none;">
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:24px;">Account Settings
+      </h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:700px;" class="animate-stagger">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" value="Lukas" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" value="Presti" />
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Campus Email</label>
+          <input type="email" class="form-input" value="lap5@njit.edu" readonly style="opacity:0.6;" />
+          <span style="font-size:0.75rem;color:var(--color-muted);">Campus email cannot be changed after
+            verification.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Campus</label>
+          <select class="form-select">
+            <option selected>NJIT</option>
+            <option>Rutgers University</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone (optional)</label>
+          <input type="tel" class="form-input" placeholder="(555) 000-0000" />
+        </div>
+
+        <div class="form-group" style="grid-column:1/-1;">
+          <div class="divider"></div>
+          <label class="form-label" style="margin-top:8px;">Notification Preferences</label>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.875rem;">
+              <input type="checkbox" checked style="accent-color:var(--color-primary);" /> Email me when someone
+              messages me
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.875rem;">
+              <input type="checkbox" checked style="accent-color:var(--color-primary);" /> Email me about my transaction
+              status
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.875rem;">
+              <input type="checkbox" style="accent-color:var(--color-primary);" /> Email me about promotions and updates
+            </label>
+          </div>
+        </div>
+
+        <div style="grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="showToast('Settings saved!','success')">Save Changes</button>
+          <button class="btn btn-ghost" style="color:var(--color-danger);border-color:rgba(244,63,94,0.3);"
+            onclick="showToast('Account deletion request submitted.','info')">Delete Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="editModal"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:5000;align-items:center;justify-content:center;padding:24px;">
+    <div
+      style="background:var(--color-bg-2);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:36px;max-width:480px;width:100%;position:relative;">
+      <button onclick="document.getElementById('editModal').style.display='none'"
+        style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--color-muted);font-size:0.7rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;">CLOSE</button>
+      <h2 style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:20px;">Edit Profile</h2>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="form-group">
+          <label class="form-label">Display Name</label>
+          <input type="text" class="form-input" value="Lukas Presti" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bio <span
+              style="font-weight:400;color:var(--color-muted);">(optional)</span></label>
+          <textarea class="form-textarea" placeholder="Tell buyers a bit about yourself…"
+            style="min-height:80px;"></textarea>
+        </div>
+        <button class="btn btn-primary"
+          onclick="document.getElementById('editModal').style.display='none';showToast('Profile updated!','success')">Save
+          Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="main-footer"></div>
+
+  <style>
+    .profile-stats {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .profile-stat {
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .profile-stat-num {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--color-primary);
+    }
+
+    .profile-stat-label {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .profile-stat-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--color-border);
+    }
+
+    .purchase-row {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition);
+    }
+
+    .purchase-row:hover {
+      border-color: rgba(20, 184, 166, 0.2);
+    }
+
+    .review-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+    }
+  </style>
+
+  <script src="js/main.js"></script>
+  <script>
+    function switchProfileTab(idx, bt) {
+      document.querySelectorAll('#profileTabs .tab-btn').forEach(b => b.classList.remove('active'));
+      var bttnObj = bt;
+      bttnObj.classList.add('active');
+      for (let i = 0; i <= 3; i++) {
+        const el = document.getElementById(`ptab${i}`);
+        if (el) el.style.display = i === idx ? 'block' : 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('myListingsGrid');
+      sampleListings.slice(0, 5).forEach(item => {
+        document.getElementById('myListingsGrid').innerHTML += `
+      <div class="listing-card">
+        <div class="listing-card-img-placeholder">${item.emoji}</div>
+        <div class="listing-card-body">
+          <div class="listing-card-title">${item.title}</div>
+          <div class="listing-card-meta">
+            <span class="listing-card-price">$${item.price}</span>
+            <span class="badge badge-success" style="font-size:0.7rem;">Active</span>
+          </div>
+          <div class="listing-card-campus">${item.campus}</div>
+        </div>
+        <div class="listing-card-footer">
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Listing marked as sold.','success')">Mark Sold</button>
+          <button style="background:none;border:none;color:var(--color-danger);cursor:pointer;font-size:0.8rem;" onclick="showToast('Listing removed.','info')">Remove</button>
+        </div>
+      </div>`;
+      });
+
+      const purchases = [
+        { emoji: '[HP]', title: 'Sony WH-1000XM4', price: 120, seller: 'Dani R.', date: 'Apr 18, 2026', status: 'Delivered' },
+        { emoji: '[BK]', title: 'Calculus Textbook (9th Ed)', price: 38, seller: 'Alex M.', date: 'Mar 29, 2026', status: 'Delivered' },
+        { emoji: '[EL]', title: 'Laptop Stand', price: 22, seller: 'Jamie K.', date: 'Mar 15, 2026', status: 'Delivered' },
+      ];
+      const list = document.getElementById('purchaseList');
+      purchases.forEach(p => {
+        list.innerHTML += `
+      <div class="purchase-row">
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;border:1px solid var(--color-border);padding:4px 8px;flex-shrink:0;color:var(--color-muted);">${p.emoji}</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:0.9rem;">${p.title}</div>
+          <div style="font-size:0.8rem;color:var(--color-muted);">From ${p.seller} · ${p.date}</div>
+        </div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--color-primary);">$${p.price}</div>
+        <span class="badge badge-success">${p.status}</span>
+      </div>`;
+      });
+
+
+      const reviews = [
+        { reviewer: 'Alex M.', rating: 5, date: 'Apr 19', text: 'Great seller! Item was exactly as described. Very fast response and easy pickup at NJIT.' },
+        { reviewer: 'Jamie K.', rating: 5, date: 'Apr 1', text: 'Super smooth transaction. Lukas was friendly, punctual, and the item was in perfect condition.' },
+        { reviewer: 'Priya S.', rating: 4, date: 'Mar 20', text: 'Good experience overall. Item had a small scratch not mentioned in listing, but seller was upfront about it in person.' },
+      ];
+      const reviewsEl = document.getElementById('reviewsList');
+      reviews.forEach(r => {
+        reviewsEl.innerHTML += `
+      <div class="review-card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div class="avatar avatar-sm" style="background:var(--color-bg-2);border:1px solid var(--color-border);width:32px;height:32px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;">${r.reviewer.charAt(0)}</div>
+          <div>
+            <div style="font-weight:600;font-size:0.875rem;">${r.reviewer}</div>
+            <div style="font-size:0.75rem;color:var(--color-muted);">${r.date}</div>
+          </div>
+          <div style="margin-left:auto;"><span class="stars">${'&#9733;'.repeat(r.rating)}${'&#9734;'.repeat(5 - r.rating)}</span></div>
+        </div>
+        <p style="font-size:0.875rem;color:var(--color-muted);line-height:1.6;">"${r.text}"</p>
+      </div>`;
+      });
+    });
+  </script>
+</body>
+
+</html>
